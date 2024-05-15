@@ -100,7 +100,8 @@ export default function Home() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
+          // width: "100%",
+          padding: 2,
         }}
       >
         <Paper
@@ -108,7 +109,6 @@ export default function Home() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "90%",
           }}
         >
           {data.length > 0 && <CustomTable data={data} />}

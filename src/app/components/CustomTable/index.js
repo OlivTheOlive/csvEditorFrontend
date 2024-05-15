@@ -11,12 +11,17 @@ export default function CustomTable({ data }) {
   // Limit the number of rows to 2000
   const limitedData = data.slice(0, 2000);
   return (
-    <TableContainer component={Paper} style={{ maxHeight: "60vh" }}>
+    <TableContainer
+      component={Paper}
+      style={{ maxHeight: "60vh", maxWidth: "80vw" }}
+    >
       <Table stickyHeader>
         <TableHead>
           <TableRow>
             {Object.keys(limitedData[0]).map((key) => (
-              <TableCell key={key}>{key}</TableCell>
+              <TableCell sx={{ fontSize: 10 }} key={key}>
+                {key}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -24,7 +29,9 @@ export default function CustomTable({ data }) {
           {limitedData.map((row, index) => (
             <TableRow key={index}>
               {Object.values(row).map((value, index) => (
-                <TableCell key={index}>{value}</TableCell>
+                <TableCell sx={{ fontSize: 10 }} key={index}>
+                  {value}
+                </TableCell>
               ))}
             </TableRow>
           ))}
