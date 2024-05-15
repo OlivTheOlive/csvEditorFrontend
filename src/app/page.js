@@ -10,8 +10,13 @@ import CustomTable from "./components/CustomTable";
 
 export default function Home() {
   const [data, setData] = useState([]);
+  const [file, setFile] = useState();
 
-  function fileHandling(event) {}
+  function fileHandling(event) {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    console.log(selectedFile);
+  }
 
   return (
     <Grid
@@ -40,7 +45,7 @@ export default function Home() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 100,
+            borderRadius: 2,
             background: "white",
             padding: 4,
             width: "20%",

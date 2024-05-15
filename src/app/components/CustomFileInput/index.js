@@ -18,17 +18,14 @@ const VisuallyHiddenInput = styled("input")({
 function CustomFileInput({ title, buttonStyle, children, onClick }) {
   return (
     <Button
-      onClick={onClick}
       style={buttonStyle}
       title={title}
       startIcon={<CloudUploadIcon />}
       component="label"
-      role={undefined}
       variant="contained"
-      tabIndex={-1}
     >
       {children}
-      <VisuallyHiddenInput type="file" />
+      <VisuallyHiddenInput type="file" onChange={onClick} />
     </Button>
   );
 }
