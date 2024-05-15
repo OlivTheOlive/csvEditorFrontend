@@ -15,9 +15,6 @@ export default function Home() {
   function fileHandling(event) {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
-    console.log("Selected File:", selectedFile.name);
-    console.log("File Type:", selectedFile.type);
-    console.log("File Size:", selectedFile.size);
   }
 
   async function uploadFile() {
@@ -96,7 +93,7 @@ export default function Home() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            width: "80%",
+            width: "90%",
           }}
         >
           {data.length > 0 && <CustomTable data={data} />}

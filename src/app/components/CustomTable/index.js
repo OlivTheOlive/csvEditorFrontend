@@ -8,31 +8,24 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function CustomTable({ data }) {
+  // Limit the number of rows to 2000
+  const limitedData = data.slice(0, 2000);
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} style={{ maxHeight: "60vh" }}>
+      <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            {Object.keys(limitedData[0]).map((key) => (
+              <TableCell key={key}>{key}</TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+          {limitedData.map((row, index) => (
+            <TableRow key={index}>
+              {Object.values(row).map((value, index) => (
+                <TableCell key={index}>{value}</TableCell>
+              ))}
             </TableRow>
           ))}
         </TableBody>
