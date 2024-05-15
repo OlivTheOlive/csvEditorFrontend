@@ -15,7 +15,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-function CustomFileInput({ title, buttonStyle, children, onClick }) {
+function CustomFileInput({ title, buttonStyle, children, onChange }) {
   return (
     <Button
       style={buttonStyle}
@@ -25,7 +25,7 @@ function CustomFileInput({ title, buttonStyle, children, onClick }) {
       variant="contained"
     >
       {children}
-      <VisuallyHiddenInput type="file" onChange={onClick} />
+      <VisuallyHiddenInput type="file" onChange={onChange} />
     </Button>
   );
 }
