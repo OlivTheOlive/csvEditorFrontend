@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
@@ -11,29 +11,36 @@ import { Button } from "@mui/material";
 export default function Home() {
   const [data, setData] = useState([]);
   const [file, setFile] = useState();
+  const [error, setError] = useState(false);
 
   function fileHandling(event) {
     const selectedFile = event.target.files[0];
     setFile(selectedFile);
+    setError(false);
   }
 
   async function uploadFile() {
     const formData = new FormData();
-    formData.append("csvFile", file);
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3030/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      setData(response.data);
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    if (file) {
+      setError(false);
+      formData.append("csvFile", file);
+      try {
+        const response = await axios.post(
+          "http://localhost:3030/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    } else {
+      setError(true);
     }
   }
 
@@ -76,6 +83,11 @@ export default function Home() {
           </CustomFileInput>
           <Button onClick={uploadFile}>Upload</Button>
           {file && <Grid>Selected File: {file.name}</Grid>}
+          {error && (
+            <Grid style={{ color: "red" }}>
+              Selecte a file please and thank you!
+            </Grid>
+          )}
         </Paper>
       </Grid>
 
