@@ -11,7 +11,7 @@ import { keyframes } from "@mui/system";
 
 const dropDownAnimation = keyframes`
   0% {
-    transform: translateY(-1000%);
+    transform: translateY(-60%);
     opacity: 0;
   }
   100% {
@@ -68,6 +68,7 @@ export default function Home() {
         minHeight: "100vh",
         width: "100%",
         flexDirection: "column",
+        animation: `${dropDownAnimation} 2s ease-out`,
       }}
     >
       <Typography
@@ -78,7 +79,6 @@ export default function Home() {
           alignItems: "center",
           width: "100%",
           marginBottom: 3,
-          animation: `${dropDownAnimation} 2s ease-out`,
         }}
       >
         Built by Olivie Bergeron
