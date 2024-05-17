@@ -6,8 +6,19 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 import CustomFileInput from "./components/CustomFileInput";
 import CustomTable from "./components/CustomTable";
-import { Backdrop, Button, CircularProgress } from "@mui/material";
+import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+import { keyframes } from "@mui/system";
 
+const dropDownAnimation = keyframes`
+  0% {
+    transform: translateY(-1000%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
 export default function Home() {
   const [data, setData] = useState([]);
   const [file, setFile] = useState();
@@ -59,6 +70,19 @@ export default function Home() {
         flexDirection: "column",
       }}
     >
+      <Typography
+        variant="h4"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          marginBottom: 3,
+          animation: `${dropDownAnimation} 2s ease-out`,
+        }}
+      >
+        Built by Olivie Bergeron
+      </Typography>
       <Grid
         container
         sx={{
