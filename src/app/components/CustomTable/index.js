@@ -8,29 +8,34 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function CustomTable({ data }) {
-  // Limit the number of rows to 2000
-  const limitedData = data.slice(0, 2000);
+  if (data.length === 0) {
+    return <div>No data available</div>;
+  }
+
+  // Extract headers from the first row of the data
+  const headers = Object.keys(data[0]);
+
   return (
     <TableContainer
       component={Paper}
-      style={{ maxHeight: "60vh", maxWidth: "80vw" }}
+      style={{ maxHeight: "65vh", maxWidth: "90vw" }}
     >
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            {Object.keys(limitedData[0]).map((key) => (
-              <TableCell sx={{ fontSize: 10 }} key={key}>
-                {key}
+            {headers.map((header) => (
+              <TableCell sx={{ fontSize: 10 }} key={header}>
+                {header}
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {limitedData.map((row, index) => (
-            <TableRow key={index}>
-              {Object.values(row).map((value, index) => (
-                <TableCell sx={{ fontSize: 10 }} key={index}>
-                  {value}
+          {data.map((row, rowIndex) => (
+            <TableRow key={rowIndex}>
+              {headers.map((header, cellIndex) => (
+                <TableCell sx={{ fontSize: 10 }} key={cellIndex}>
+                  {row[header]}
                 </TableCell>
               ))}
             </TableRow>

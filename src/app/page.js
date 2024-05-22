@@ -48,7 +48,7 @@ export default function Home() {
             },
           }
         );
-        setData(response.data);
+        setData(response.data._data);
         setLoading(false);
       } catch (error) {
         console.error("Error uploading file:", error);
