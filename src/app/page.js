@@ -1,12 +1,31 @@
 "use client";
 
+// Importing React library and specific hooks from React
 import React, { use, useState } from "react";
+
+// Importing Grid component from Material-UI for creating a grid layout
 import Grid from "@mui/material/Grid";
+
+// Importing Paper component from Material-UI, used to create paper-like surfaces
 import Paper from "@mui/material/Paper";
+
+// Importing axios, a promise-based HTTP client for making requests to APIs
 import axios from "axios";
+
+// Importing a custom file input component from the local components directory
 import CustomFileInput from "./components/CustomFileInput";
+
+// Importing a custom table component from the local components directory
 import CustomTable from "./components/CustomTable";
+
+// Importing several components from Material-UI:
+// - Backdrop: A component that provides a simple backdrop over the page content
+// - Button: A button component with various styling options
+// - CircularProgress: A component that shows a circular loading indicator
+// - Typography: A component for displaying text with various styles
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+
+// Importing keyframes utility from Material-UI's system for creating CSS animations
 import { keyframes } from "@mui/system";
 
 const dropDownAnimation = keyframes`
