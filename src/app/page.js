@@ -12,17 +12,13 @@ import Paper from "@mui/material/Paper";
 // Importing axios, a promise-based HTTP client for making requests to APIs
 import axios from "axios";
 
-// Importing a custom file input component from the local components directory
+// Importing a custom file input component
 import CustomFileInput from "./components/CustomFileInput";
 
-// Importing a custom table component from the local components directory
+// Importing a custom table component
 import CustomTable from "./components/CustomTable";
 
-// Importing several components from Material-UI:
-// - Backdrop: A component that provides a simple backdrop over the page content
-// - Button: A button component with various styling options
-// - CircularProgress: A component that shows a circular loading indicator
-// - Typography: A component for displaying text with various styles
+// Importing several components from Material-UI
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 
 // Importing keyframes utility from Material-UI's system for creating CSS animations
@@ -38,6 +34,12 @@ const dropDownAnimation = keyframes`
     opacity: 1;
   }
 `;
+/**
+ * Manages file uploads and displays data in a table format.
+ * Uses hooks for state management and handles file uploads asynchronously using axios.
+ *
+ * @returns {JSX.Element} React component with file input, upload button, and data table.
+ */
 export default function Home() {
   const [data, setData] = useState([]);
   const [file, setFile] = useState();
