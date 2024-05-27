@@ -59,7 +59,7 @@ export default function Home() {
       formData.append("csvFile", file);
       try {
         const response = await axios.post(
-          "http://localhost:3030/upload",
+          "http://localhost:3033/upload",
           formData,
           {
             headers: {

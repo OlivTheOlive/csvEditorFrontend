@@ -15,6 +15,16 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+/**
+ * Renders a styled file input button using Material-UI components.
+ * The actual file input element is visually hidden but accessible for screen readers and functional via a styled button.
+ *
+ * @param {string} title - The title attribute of the button for accessibility.
+ * @param {object} buttonStyle - Inline styles for the button.
+ * @param {node} children - React nodes to be displayed inside the button, typically text or icons.
+ * @param {function} onChange - Function to handle the change event when a file is selected.
+ * @returns {JSX.Element} A styled button that visually masks a file input element.
+ */
 function CustomFileInput({ title, buttonStyle, children, onChange }) {
   return (
     <Button
