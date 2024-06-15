@@ -1,35 +1,25 @@
 "use client";
-
 // Importing React library and specific hooks from React
 import React, { useState, ChangeEvent } from "react";
-
 // Importing Grid component from Material-UI for creating a grid layout
 import Grid from "@mui/material/Grid";
-
 // Importing Paper component from Material-UI, used to create paper-like surfaces
 import Paper from "@mui/material/Paper";
-
 // Importing axios, a promise-based HTTP client for making requests to APIs
 import axios from "axios";
-
 // Importing a custom file input component
 import CustomButton from "@/components/CustomButton/index";
-
 // Importing a custom table component
 import CustomTable from "@/components/CustomTable/CustomTable";
-
 // Importing several components from Material-UI
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
-
 // Importing keyframes utility from Material-UI's system for creating CSS animations
 import { keyframes } from "@mui/system";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-
 // Define TypeScript types for state variables
 interface Data {
   _data: any[];
 }
-
 const dropDownAnimation = keyframes`
   0% {
     transform: translateY(-60%);
