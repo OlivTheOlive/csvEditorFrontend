@@ -1,7 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 // Define the type for the hidden file input
 const VisuallyHiddenInput = styled("input")({
@@ -17,11 +16,12 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 // Define the type for the component props
-interface CustomFileInputProps {
+interface CustomBottonProps {
   title: string;
   buttonStyle?: React.CSSProperties;
   children: React.ReactNode;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  buttonIcon: React.ReactNode;
 }
 
 /**
@@ -31,17 +31,18 @@ interface CustomFileInputProps {
  * @param {CustomFileInputProps} props - The props object containing the title, buttonStyle, children, and onChange function.
  * @returns {JSX.Element} A styled button that visually masks a file input element.
  */
-const CustomFileInput: React.FC<CustomFileInputProps> = ({
+const CustomButton: React.FC<CustomBottonProps> = ({
   title,
   buttonStyle,
   children,
   onChange,
+  buttonIcon,
 }) => {
   return (
     <Button
       style={buttonStyle}
       title={title}
-      startIcon={<CloudUploadIcon />}
+      startIcon={buttonIcon}
       component="label"
       variant="contained"
     >
@@ -51,4 +52,4 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({
   );
 };
 
-export default CustomFileInput;
+export default CustomButton;

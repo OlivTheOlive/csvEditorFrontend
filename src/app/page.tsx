@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 import axios from "axios";
 
 // Importing a custom file input component
-import CustomFileInput from "@/components/CustomFileInput/index";
+import CustomButton from "@/components/CustomButton/index";
 
 // Importing a custom table component
 import CustomTable from "@/components/CustomTable/CustomTable";
@@ -23,6 +23,7 @@ import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 
 // Importing keyframes utility from Material-UI's system for creating CSS animations
 import { keyframes } from "@mui/system";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 // Define TypeScript types for state variables
 interface Data {
@@ -67,7 +68,7 @@ export default function Home(): JSX.Element {
       formData.append("csvFile", file);
       try {
         const response = await axios.post<Data>(
-          "http://localhost:3033/upload",
+          "http://localhost:3033/api/upload",
           formData,
           {
             headers: {
@@ -132,9 +133,13 @@ export default function Home(): JSX.Element {
             flexDirection: "column",
           }}
         >
-          <CustomFileInput title={"Insert File"} onChange={fileHandling}>
+          <CustomButton
+            title={"Insert File"}
+            onChange={fileHandling}
+            buttonIcon={<CloudUploadIcon />}
+          >
             File
-          </CustomFileInput>
+          </CustomButton>
           <Button onClick={uploadFile}>Upload</Button>
           {file && <Grid>Selected File: {file.name}</Grid>}
           {error && (
