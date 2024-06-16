@@ -77,6 +77,34 @@ export default function Home(): JSX.Element {
     }
   }
 
+  async function saveFile() {
+    const formData = new FormData();
+
+    if (file) {
+      setError(false);
+      setLoading(true);
+      formData.append("csvFile", file);
+      try {
+        const response = await axios.post<Data>(
+          "http://localhost:3033/api/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        setData(response.data._data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        setLoading(false);
+      }
+    } else {
+      setError(true);
+    }
+  }
+
   return (
     <Grid
       container
