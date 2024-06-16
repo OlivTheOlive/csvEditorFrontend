@@ -16,7 +16,6 @@ interface CustomTableProps {
   data: Record<string, any>[];
   onUpdatedData: (updatedData: Record<string, any>[]) => void;
 }
-
 /**
  * Renders a table using Material-UI DataGrid with cell editing, row deletion, and new entry capabilities.
  * Displays data passed as a prop in a tabular format. If no data is provided,
@@ -29,25 +28,22 @@ export default function CustomTable({
   data,
   onUpdatedData,
 }: CustomTableProps): JSX.Element {
+  //makes a list of rows within the useState
   const [rows, setRows] = React.useState<GridRowsProp>(() =>
     data.map((row, index) => ({
-      id: index, // Add an id for each row, required by DataGrid
+      id: index,
       ...row,
     }))
   );
-
   React.useEffect(() => {
     // Update rows when external data prop changes
     setRows(data.map((row, index) => ({ id: index + 1, ...row })));
   }, [data]);
-
   if (data.length === 0) {
     return <div>No data available</div>;
   }
-
   // Extract headers from the first row of the data
   const headers = Object.keys(data[0]);
-
   // Create columns array for the DataGrid
   const columns: GridColDef[] = headers.map((header) => ({
     field: header,
@@ -56,7 +52,6 @@ export default function CustomTable({
     editable: true, // Make cells editable
     type: "string", // Set type to 'date' if it is a date column
   }));
-
   // Add a delete button column
   columns.push({
     field: "actions",
@@ -83,16 +78,13 @@ export default function CustomTable({
     return newRow;
   };
 
-  // Handle delete row
   const handleDelete = (id: number) => {
     const updatedRows = rows.filter((row) => row.id !== id);
-
     setRows(updatedRows.map((row, index) => ({ ...row, id: index })));
-
-    // Prepare updated data after deleting row
+    // updates the list with the newly deleted data
     const updatedData = updatedRows.map((row, index) => ({
       ...row,
-      id: index + 1, // Update ids after deletion
+      id: index + 1, // adjusts ids after deletion
     }));
 
     onUpdatedData(updatedData); // Send updated data back to the parent component

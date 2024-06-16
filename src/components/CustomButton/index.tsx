@@ -27,9 +27,9 @@ interface CustomButtonProps {
 
 /**
  * Renders a styled file input button using Material-UI components.
- * The actual file input element is visually hidden but accessible for screen readers and functional via a styled button.
+ * The actual file input element is visually hidden but accessible for users and is functional via a styled button.
  *
- * @param {CustomButtonProps} props - The props object containing the title, buttonStyle, children, onChange function, and onClick function.
+ * @param {CustomButtonProps} props - The props object contains: title, buttonStyle, children, onChange function, and onClick function.
  * @returns {JSX.Element} A styled button that visually masks a file input element.
  */
 const CustomButton: React.FC<CustomButtonProps> = ({

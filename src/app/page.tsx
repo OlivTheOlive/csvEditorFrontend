@@ -1,24 +1,15 @@
 "use client";
-// Importing React library and specific hooks from React
 import React, { useState, ChangeEvent } from "react";
-// Importing Grid component from Material-UI for creating a grid layout
 import Grid from "@mui/material/Grid";
-// Importing Paper component from Material-UI, used to create paper-like surfaces
 import Paper from "@mui/material/Paper";
-// Importing axios, a promise-based HTTP client for making requests to APIs
 import axios from "axios";
-// Importing a custom file input component
 import CustomButton from "@/components/CustomButton/index";
-// Importing a custom table component
 import CustomTable from "@/components/CustomTable/CustomTable";
-// Importing several components from Material-UI
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
-// Importing keyframes utility from Material-UI's system for creating CSS animations
 import { keyframes } from "@mui/system";
-
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HistoryView from "@/components/HistoryView";
-// Define TypeScript types for state variables
+
 interface Data {
   _data: any[];
 }
@@ -35,8 +26,7 @@ const dropDownAnimation = keyframes`
 
 /**
  * Manages file uploads and displays data in a table format.
- * Uses hooks for state management and handles file uploads asynchronously using axios.
- *
+ * Uses react hooks for state management and handles file uploads asynchronously using axios.
  * @returns {JSX.Element} React component with file input, upload button, and data table.
  */
 export default function Home(): JSX.Element {
@@ -81,13 +71,11 @@ export default function Home(): JSX.Element {
       setError(true);
     }
   }
-
   /**
    * Function to save updated data to the server.
    * @param updatedData Updated data to send to the server.
    * @returns Promise<void>
    */
-
   async function saveFile(updatedData: any[]): Promise<void> {
     if (updatedData && updatedData.length > 0) {
       setError(false);
@@ -114,7 +102,7 @@ export default function Home(): JSX.Element {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        await fetchHistory();
+        // await fetchHistory();
         // try {
         //   // Fetch history after saving the file
         //   const historyResponse = await axios.get(
@@ -135,30 +123,30 @@ export default function Home(): JSX.Element {
       setError(true);
     }
   }
-  async function fetchHistory() {
-    try {
-      const response = await fetch("http://localhost:3030/api/history", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  // async function fetchHistory() {
+  //   try {
+  //     const response = await fetch("http://localhost:3030/api/history", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
 
-      const data = await response.json();
-      console.log(data);
-      setHistory(data);
-    } catch (error) {
-      console.error("Error fetching history:", error);
-    }
-  }
+  //     const data = await response.json();
+  //     console.log(data);
+  //     setHistory(data);
+  //   } catch (error) {
+  //     console.error("Error fetching history:", error);
+  //   }
+  // }
 
   const handleUpdatedData = (updatedData: Record<string, any>[]) => {
     setData(updatedData);
-    saveFile(updatedData);
+    // saveFile(updatedData);
   };
 
   return (
@@ -222,7 +210,7 @@ export default function Home(): JSX.Element {
             </Grid>
           )}
         </Paper>
-        <Paper
+        {/* <Paper
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -234,7 +222,7 @@ export default function Home(): JSX.Element {
           }}
         >
           <HistoryView history={history} />
-        </Paper>
+        </Paper> */}
       </Grid>
 
       <Grid
