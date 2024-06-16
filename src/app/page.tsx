@@ -15,6 +15,7 @@ import CustomTable from "@/components/CustomTable/CustomTable";
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 // Importing keyframes utility from Material-UI's system for creating CSS animations
 import { keyframes } from "@mui/system";
+
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 // Define TypeScript types for state variables
 interface Data {
@@ -58,7 +59,7 @@ export default function Home(): JSX.Element {
       formData.append("csvFile", file);
       try {
         const response = await axios.post<Data>(
-          "http://localhost:3033/api/upload",
+          "http://localhost:3030/api/upload",
           formData,
           {
             headers: {
@@ -77,28 +78,43 @@ export default function Home(): JSX.Element {
     }
   }
 
-  async function saveFile() {
-    const formData = new FormData();
+  /**
+   * Function to save updated data to the server.
+   * @param updatedData Updated data to send to the server.
+   * @returns Promise<void>
+   */
 
-    if (file) {
+  async function saveFile(updatedData: any[]): Promise<void> {
+    if (updatedData && updatedData.length > 0) {
       setError(false);
       setLoading(true);
-      formData.append("csvFile", file);
+
       try {
-        const response = await axios.post<Data>(
-          "http://localhost:3033/api/upload",
-          formData,
+        const response = await axios.post(
+          "http://localhost:3030/api/update",
+          { data: updatedData }, // Send the updated data as a JSON payload
           {
+            responseType: "blob", // Ensure response type is handled as a blob
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
             },
           }
         );
-        setData(response.data._data);
-        setLoading(false);
+
+        // Handle the file download
+        const blob = new Blob([response.data], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "data.csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        setLoading(false); // Set loading to false after successful download
       } catch (error) {
-        console.error("Error uploading file:", error);
-        setLoading(false);
+        console.error("Error saving data:", error);
+        setLoading(false); // Ensure loading is set to false in case of error
       }
     } else {
       setError(true);
@@ -177,6 +193,7 @@ export default function Home(): JSX.Element {
           padding: 2,
         }}
       >
+        <Button onClick={() => saveFile(data)}>Save File</Button>
         <Paper
           sx={{
             display: "flex",
@@ -184,7 +201,9 @@ export default function Home(): JSX.Element {
             alignItems: "center",
           }}
         >
-          {data.length > 0 && <CustomTable data={data} />}
+          {data.length > 0 && (
+            <CustomTable data={data} onUpdatedData={setData} />
+          )}
         </Paper>
       </Grid>
       <Backdrop

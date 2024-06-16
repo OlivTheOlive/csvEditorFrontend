@@ -1,6 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import { MouseEvent } from "react";
 
 // Define the type for the hidden file input
 const VisuallyHiddenInput = styled("input")({
@@ -16,7 +17,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 // Define the type for the component props
-interface CustomBottonProps {
+interface CustomButtonProps {
   title: string;
   buttonStyle?: React.CSSProperties;
   children: React.ReactNode;
@@ -28,10 +29,10 @@ interface CustomBottonProps {
  * Renders a styled file input button using Material-UI components.
  * The actual file input element is visually hidden but accessible for screen readers and functional via a styled button.
  *
- * @param {CustomFileInputProps} props - The props object containing the title, buttonStyle, children, and onChange function.
+ * @param {CustomButtonProps} props - The props object containing the title, buttonStyle, children, onChange function, and onClick function.
  * @returns {JSX.Element} A styled button that visually masks a file input element.
  */
-const CustomButton: React.FC<CustomBottonProps> = ({
+const CustomButton: React.FC<CustomButtonProps> = ({
   title,
   buttonStyle,
   children,
