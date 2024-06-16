@@ -38,7 +38,7 @@ export default function CustomTable({
 
   React.useEffect(() => {
     // Update rows when external data prop changes
-    setRows(data.map((row, index) => ({ id: index, ...row })));
+    setRows(data.map((row, index) => ({ id: index + 1, ...row })));
   }, [data]);
 
   if (data.length === 0) {
@@ -92,7 +92,7 @@ export default function CustomTable({
     // Prepare updated data after deleting row
     const updatedData = updatedRows.map((row, index) => ({
       ...row,
-      id: index, // Update ids after deletion
+      id: index + 1, // Update ids after deletion
     }));
 
     onUpdatedData(updatedData); // Send updated data back to the parent component

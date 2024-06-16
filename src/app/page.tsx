@@ -17,6 +17,7 @@ import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { keyframes } from "@mui/system";
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import HistoryView from "@/components/HistoryView";
 // Define TypeScript types for state variables
 interface Data {
   _data: any[];
@@ -43,6 +44,9 @@ export default function Home(): JSX.Element {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [history, setHistory] = useState<
+    Array<{ id: number; timestamp: string; data: Record<string, any>[] }>
+  >([]);
 
   function fileHandling(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
@@ -92,9 +96,9 @@ export default function Home(): JSX.Element {
       try {
         const response = await axios.post(
           "http://localhost:3030/api/update",
-          { data: updatedData }, // Send the updated data as a JSON payload
+          { data: updatedData },
           {
-            responseType: "blob", // Ensure response type is handled as a blob
+            responseType: "blob",
             headers: {
               "Content-Type": "application/json",
             },
@@ -110,16 +114,52 @@ export default function Home(): JSX.Element {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        await fetchHistory();
+        // try {
+        //   // Fetch history after saving the file
+        //   const historyResponse = await axios.get(
+        //     "http://localhost:3030/api/history"
+        //   );
+        //   console.log(historyResponse);
+        //   // setHistory(historyResponse);
+        // } catch (error) {
+        //   console.error("Error saving history:", error);
+        // }
 
-        setLoading(false); // Set loading to false after successful download
+        setLoading(false);
       } catch (error) {
         console.error("Error saving data:", error);
-        setLoading(false); // Ensure loading is set to false in case of error
+        setLoading(false);
       }
     } else {
       setError(true);
     }
   }
+  async function fetchHistory() {
+    try {
+      const response = await fetch("http://localhost:3030/api/history", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setHistory(data);
+    } catch (error) {
+      console.error("Error fetching history:", error);
+    }
+  }
+
+  const handleUpdatedData = (updatedData: Record<string, any>[]) => {
+    setData(updatedData);
+    saveFile(updatedData);
+  };
 
   return (
     <Grid
@@ -182,6 +222,19 @@ export default function Home(): JSX.Element {
             </Grid>
           )}
         </Paper>
+        <Paper
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 2,
+            padding: 4,
+            width: "30%",
+            flexDirection: "column",
+          }}
+        >
+          <HistoryView history={history} />
+        </Paper>
       </Grid>
 
       <Grid
@@ -202,7 +255,7 @@ export default function Home(): JSX.Element {
           }}
         >
           {data.length > 0 && (
-            <CustomTable data={data} onUpdatedData={setData} />
+            <CustomTable data={data} onUpdatedData={handleUpdatedData} />
           )}
         </Paper>
       </Grid>
