@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
@@ -11,8 +11,17 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HistoryView from "@/components/HistoryView";
 
 interface Data {
-  _data: any[];
+  data: any[];
+  id: string;
 }
+
+interface HistoryItem {
+  _id: string;
+  createdAt: string;
+  records: Record<string, any>[];
+  name: string;
+}
+
 const dropDownAnimation = keyframes`
   0% {
     transform: translateY(-60%);
@@ -24,19 +33,27 @@ const dropDownAnimation = keyframes`
   }
 `;
 
-/**
- * Manages file uploads and displays data in a table format.
- * Uses react hooks for state management and handles file uploads asynchronously using axios.
- * @returns {JSX.Element} React component with file input, upload button, and data table.
- */
 export default function Home(): JSX.Element {
   const [data, setData] = useState<any[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [history, setHistory] = useState<
-    Array<{ id: number; timestamp: string; data: Record<string, any>[] }>
-  >([]);
+  const [id, setId] = useState<string>("");
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get("http://localhost:3030/api/history");
+        setHistory(response.data);
+      } catch (err: any) {
+        console.error("Error fetching history:", err);
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   function fileHandling(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
@@ -61,7 +78,8 @@ export default function Home(): JSX.Element {
             },
           }
         );
-        setData(response.data._data);
+        setData(response.data.data);
+        setId(response.data.id);
         setLoading(false);
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -71,11 +89,7 @@ export default function Home(): JSX.Element {
       setError(true);
     }
   }
-  /**
-   * Function to save updated data to the server.
-   * @param updatedData Updated data to send to the server.
-   * @returns Promise<void>
-   */
+
   async function saveFile(updatedData: any[]): Promise<void> {
     if (updatedData && updatedData.length > 0) {
       setError(false);
@@ -84,7 +98,7 @@ export default function Home(): JSX.Element {
       try {
         const response = await axios.post(
           "http://localhost:3030/api/update",
-          { data: updatedData },
+          { data: updatedData, id },
           {
             responseType: "blob",
             headers: {
@@ -102,17 +116,6 @@ export default function Home(): JSX.Element {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        // await fetchHistory();
-        // try {
-        //   // Fetch history after saving the file
-        //   const historyResponse = await axios.get(
-        //     "http://localhost:3030/api/history"
-        //   );
-        //   console.log(historyResponse);
-        //   // setHistory(historyResponse);
-        // } catch (error) {
-        //   console.error("Error saving history:", error);
-        // }
 
         setLoading(false);
       } catch (error) {
@@ -123,30 +126,21 @@ export default function Home(): JSX.Element {
       setError(true);
     }
   }
-  // async function fetchHistory() {
-  //   try {
-  //     const response = await fetch("http://localhost:3030/api/history", {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
 
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-
-  //     const data = await response.json();
-  //     console.log(data);
-  //     setHistory(data);
-  //   } catch (error) {
-  //     console.error("Error fetching history:", error);
-  //   }
-  // }
+  const handleItemClick = (item: HistoryItem) => {
+    setSelectedItem(item);
+    setData(item.records); // Update displayed data with the selected item's records
+  };
 
   const handleUpdatedData = (updatedData: Record<string, any>[]) => {
     setData(updatedData);
     // saveFile(updatedData);
+  };
+
+  const handleClean = () => {
+    setData([]); // Clear the table data
+    setSelectedItem(null); // Reset the selected item
+    setFile(null); // Clear the selected file
   };
 
   return (
@@ -210,7 +204,7 @@ export default function Home(): JSX.Element {
             </Grid>
           )}
         </Paper>
-        {/* <Paper
+        <Paper
           sx={{
             display: "flex",
             justifyContent: "center",
@@ -221,8 +215,8 @@ export default function Home(): JSX.Element {
             flexDirection: "column",
           }}
         >
-          <HistoryView history={history} />
-        </Paper> */}
+          <HistoryView history={history} onItemClick={handleItemClick} />
+        </Paper>
       </Grid>
 
       <Grid
@@ -235,20 +229,21 @@ export default function Home(): JSX.Element {
         }}
       >
         <Button onClick={() => saveFile(data)}>Save File</Button>
-        <Paper
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+        <Button
+          onClick={handleClean}
+          variant="outlined"
+          color="error"
+          sx={{ ml: 2 }}
         >
-          {data.length > 0 && (
-            <CustomTable data={data} onUpdatedData={handleUpdatedData} />
-          )}
-        </Paper>
+          Clean
+        </Button>
+
+        {data.length > 0 && (
+          <CustomTable data={data} onUpdatedData={handleUpdatedData} />
+        )}
       </Grid>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <CircularProgress color="inherit" />

@@ -14,6 +14,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 // Define the type for the data prop
 interface CustomTableProps {
   data: Record<string, any>[];
+
   onUpdatedData: (updatedData: Record<string, any>[]) => void;
 }
 /**

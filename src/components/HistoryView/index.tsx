@@ -1,30 +1,34 @@
 import React from "react";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 
-interface HistoryViewProps {
-  history: Array<{
-    id: number;
-    timestamp: string;
-    data: Record<string, any>[];
-  }>;
+interface HistoryItem {
+  _id: string;
+  createdAt: string;
+  records: Record<string, any>[];
+  name: string;
 }
 
-const HistoryView: React.FC<HistoryViewProps> = ({ history }) => {
+interface HistoryViewProps {
+  history: HistoryItem[];
+  onItemClick: (item: HistoryItem) => void; // New prop for handling item clicks
+}
+
+const HistoryView: React.FC<HistoryViewProps> = ({ history, onItemClick }) => {
   if (history.length === 0) {
-    return <div>No history available</div>;
+    return <Typography>No history available</Typography>;
   }
 
   return (
-    <div>
-      <h2>History</h2>
-      <ul>
-        {history.map((entry) => (
-          <li key={entry.id}>
-            <p>{new Date(entry.timestamp).toLocaleString()}</p>
-            <pre>{JSON.stringify(entry.data, null, 2)}</pre>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <List>
+      {history.map((entry) => (
+        <ListItem key={entry._id} button onClick={() => onItemClick(entry)}>
+          <ListItemText
+            primary={entry.name}
+            secondary={new Date(entry.createdAt).toLocaleString()}
+          />
+        </ListItem>
+      ))}
+    </List>
   );
 };
 
