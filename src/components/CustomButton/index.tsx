@@ -16,7 +16,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-// Define the type for the component props
+// type
 interface CustomButtonProps {
   title: string;
   buttonStyle?: React.CSSProperties;

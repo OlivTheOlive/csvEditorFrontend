@@ -11,7 +11,7 @@ import { IconButton, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-// Define the type for the data prop
+// types
 interface CustomTableProps {
   data: Record<string, any>[];
 

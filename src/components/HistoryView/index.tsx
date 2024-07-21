@@ -12,7 +12,7 @@ interface HistoryViewProps {
   history: HistoryItem[];
   onItemClick: (item: HistoryItem) => void; // New prop for handling item clicks
 }
-
+//History component thta uses mui list component to display lazy list of file history used
 const HistoryView: React.FC<HistoryViewProps> = ({ history, onItemClick }) => {
   if (history.length === 0) {
     return <Typography>No history available</Typography>;
