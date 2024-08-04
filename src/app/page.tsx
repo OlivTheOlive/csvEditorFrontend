@@ -34,6 +34,13 @@ const dropDownAnimation = keyframes`
   }
 `;
 
+/**
+ * Functional component representing the Home page.
+ * Manages file upload, data handling, and history display.
+ * Utilizes state hooks for data, file, error, loading, id, history, and selectedItem.
+ * Handles file upload, saving data, and cleaning data.
+ * Displays UI elements for file upload, history view, data table, and loading indicator.
+ */
 export default function Home(): JSX.Element {
   const [data, setData] = useState<any[]>([]);
   const [file, setFile] = useState<File | null>(null);
