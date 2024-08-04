@@ -13,9 +13,7 @@ interface CustomPieProps {
 }
 
 export default function PieChartComponent({ data }: CustomPieProps) {
-  const [pickedType, setPickedType] = React.useState<string>("TYPE");
-
-  // Handle the change event for the dropdown
+  const [pickedType, setPickedType] = React.useState<string>("TYPE"); // Default is Type
   const handleChange = (event: SelectChangeEvent<string>) => {
     setPickedType(event.target.value);
   };
@@ -23,10 +21,8 @@ export default function PieChartComponent({ data }: CustomPieProps) {
   // Use useMemo to memoize the computation of data points
   // This ensures that the computation is only done when the data or pickedType changes
   const dataPoints = React.useMemo(() => {
-    // Reduce the data array to count occurrences of each picked type
     const counts = data.reduce((acc, item) => {
       const type = item[pickedType] || item.TYPE;
-      // Increment the count for the current type, initializing to 0 if it doesn't exist
       acc[type] = (acc[type] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
