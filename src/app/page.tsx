@@ -9,6 +9,7 @@ import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { keyframes } from "@mui/system";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HistoryView from "@/components/HistoryView";
+import PieChartComponent from "@/components/CustomPieChart";
 
 interface Data {
   data: any[];
@@ -178,6 +179,48 @@ export default function Home(): JSX.Element {
           marginBottom: 3,
         }}
       >
+        <Paper
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 2,
+            padding: 4,
+            width: "30%",
+            flexDirection: "column",
+          }}
+        >
+          {data.length > 0 ? (
+            <>
+              <Typography
+                variant="h6"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  marginBottom: 3,
+                }}
+              >
+                Types
+              </Typography>
+              <PieChartComponent data={data} />
+            </>
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                marginBottom: 3,
+              }}
+            >
+              No Data
+            </Typography>
+          )}
+        </Paper>
         <Paper
           sx={{
             display: "flex",
